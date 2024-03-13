@@ -24,22 +24,19 @@
             font-size: 18px;
         }
 
-        textarea {
-            width: 80%;
-            height: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            border: 2px solid #fff;
-            background-color: #222;
-            color: #fff;
+        form {
+            margin-top: 20px;
         }
 
-        input[type="text"] {
+        label, input {
+            display: block;
+            margin: 10px auto;
+        }
+
+        input[type="text"],
+        input[type="password"] {
             width: 40%;
             padding: 10px;
-            margin-bottom: 20px;
             border: 2px solid #fff;
             background-color: #222;
             color: #fff;
@@ -68,10 +65,35 @@
             font-size: 16px;
             white-space: pre;
         }
+
+        #newest-user {
+            margin-top: 20px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>ASCII Art Sharing</h1>
+    <form id="register-form">
+        <h2>Register</h2>
+        <label for="register-username">Username:</label>
+        <input type="text" id="register-username" placeholder="Enter username..." required>
+        <label for="register-password">Password:</label>
+        <input type="password" id="register-password" placeholder="Enter password..." required>
+        <button type="submit">Register</button>
+    </form>
+    <hr>
+    <form id="login-form">
+        <h2>Login</h2>
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username" placeholder="Enter username..." required>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" placeholder="Enter password..." required>
+        <button type="submit">Login</button>
+    </form>
+    <hr>
+    <div id="newest-user"></div>
+    <hr>
     <p>Type your ASCII art below:</p>
     <textarea id="ascii-art-input" placeholder="Enter your ASCII art here..."></textarea>
     <br>
@@ -87,6 +109,44 @@
     <div id="ascii-art-output"></div>
 
     <script>
+        const users = {};
+        let newestUser = '';
+
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+            if (username === '' || password === '') {
+                alert('Please enter both username and password for registration.');
+                return;
+            }
+            if (users.hasOwnProperty(username)) {
+                alert('Username already exists. Please choose a different username.');
+                return;
+            }
+            users[username] = password;
+            newestUser = username;
+            updateNewestUserDisplay();
+            alert('Registration successful! You can now login with your credentials.');
+            document.getElementById('register-form').reset();
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            if (username === '' || password === '') {
+                alert('Please enter both username and password for login.');
+                return;
+            }
+            if (!users.hasOwnProperty(username) || users[username] !== password) {
+                alert('Invalid username or password. Please try again.');
+                return;
+            }
+            alert('Login successful!');
+            // Proceed with further actions after successful login (e.g., displaying ASCII art functionality).
+        });
+
         const asciiArtMap = {};
 
         function shareAsciiArt() {
@@ -112,6 +172,11 @@
             } else {
                 alert('No ASCII art found with that ID or name');
             }
+        }
+
+        function updateNewestUserDisplay() {
+            const newestUserDisplay = document.getElementById('newest-user');
+            newestUserDisplay.textContent = `Newest user: ${newestUser}`;
         }
     </script>
 </body>
