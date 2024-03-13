@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Sharing</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-top: 50px;
+            letter-spacing: 5px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        textarea {
+            width: 80%;
+            height: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            border: 2px solid #fff;
+            background-color: #222;
+            color: #fff;
+        }
+
+        input[type="text"] {
+            width: 40%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #fff;
+            background-color: #222;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            background-color: #ff00ff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ffccff;
+        }
+
+        #ascii-art-output {
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>ASCII Art Sharing</h1>
+    <p>Type your ASCII art below:</p>
+    <textarea id="ascii-art-input" placeholder="Enter your ASCII art here..."></textarea>
+    <br>
+    <button onclick="shareAsciiArt()">Share</button>
+    <p>Share your ASCII art by entering the ID or name:</p>
+    <input type="text" id="share-id" placeholder="Enter ID or name...">
+    <button onclick="displayAsciiArt()">Display</button>
+    <div id="ascii-art-output"></div>
+
+    <script>
+        const asciiArtMap = {};
+
+        function shareAsciiArt() {
+            const asciiArtInput = document.getElementById('ascii-art-input').value;
+            const id = generateId();
+            asciiArtMap[id] = asciiArtInput;
+            alert(`Your ASCII art has been shared with ID: ${id}`);
+        }
+
+        function displayAsciiArt() {
+            const shareId = document.getElementById('share-id').value;
+            const asciiArt = asciiArtMap[shareId];
+            if (asciiArt) {
+                document.getElementById('ascii-art-output').innerText = asciiArt;
+            } else {
+                alert('No ASCII art found with that ID');
+            }
+        }
+
+        function generateId() {
+            return Math.random().toString(36).substring(7);
+        }
+    </script>
+</body>
+</html>
