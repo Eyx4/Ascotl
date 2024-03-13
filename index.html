@@ -75,9 +75,14 @@
     <p>Type your ASCII art below:</p>
     <textarea id="ascii-art-input" placeholder="Enter your ASCII art here..."></textarea>
     <br>
-    <button onclick="shareAsciiArt()">Share</button>
-    <p>Share your ASCII art by entering the ID or name:</p>
+    <label for="share-id">Share with ID or name:</label>
     <input type="text" id="share-id" placeholder="Enter ID or name...">
+    <br>
+    <button onclick="shareAsciiArt()">Share</button>
+    <br>
+    <hr>
+    <p>Retrieve ASCII art by entering ID or name:</p>
+    <input type="text" id="retrieve-id" placeholder="Enter ID or name...">
     <button onclick="displayAsciiArt()">Display</button>
     <div id="ascii-art-output"></div>
 
@@ -86,23 +91,27 @@
 
         function shareAsciiArt() {
             const asciiArtInput = document.getElementById('ascii-art-input').value;
-            const id = generateId();
-            asciiArtMap[id] = asciiArtInput;
-            alert(`Your ASCII art has been shared with ID: ${id}`);
+            const shareId = document.getElementById('share-id').value.trim();
+            if (shareId === '') {
+                alert('Please enter an ID or name to share the ASCII art.');
+                return;
+            }
+            asciiArtMap[shareId] = asciiArtInput;
+            alert(`Your ASCII art has been shared with ID or name: ${shareId}`);
         }
 
         function displayAsciiArt() {
-            const shareId = document.getElementById('share-id').value;
-            const asciiArt = asciiArtMap[shareId];
+            const retrieveId = document.getElementById('retrieve-id').value.trim();
+            if (retrieveId === '') {
+                alert('Please enter an ID or name to retrieve the ASCII art.');
+                return;
+            }
+            const asciiArt = asciiArtMap[retrieveId];
             if (asciiArt) {
                 document.getElementById('ascii-art-output').innerText = asciiArt;
             } else {
-                alert('No ASCII art found with that ID');
+                alert('No ASCII art found with that ID or name');
             }
-        }
-
-        function generateId() {
-            return Math.random().toString(36).substring(7);
         }
     </script>
 </body>
